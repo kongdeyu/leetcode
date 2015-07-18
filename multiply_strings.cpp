@@ -1,182 +1,112 @@
-
-#include <algorithm>
-#include <iostream>
-#include <sstream>
-#include <string>
-#include <vector>
-
-template <typename InputIterator>
-void print(InputIterator begin, InputIterator end)
-{
-    std::cout << "element number:" << end - begin << std::endl;
-    for(InputIterator it = begin; it != end; it++)
-    {
-        std::cout << *it << " ";
-    }
-    std::cout << std::endl;
-}
-
-int32_t ch2num(char ch)
-{
-    return ch - '0';
-}
-
-std::vector<int32_t> string2num(const std::string &num)
-{
-    std::vector<int32_t> res;
-    std::string::const_iterator cit = num.begin();
-    if(*cit != '-' && *cit != '+' && (*cit < '0' || *cit > '9'))
-    {
-        res.push_back(0);
-        return res;
-    }
-
-    if(*cit == '-' || *cit == '+')
-    {
-        cit++;
-    }
-
-    for(; cit != num.end(); cit++)
-    {
-        if(*cit < '0' || *cit > '9')
+class Solution {
+public:
+    string multiply(string num1, string num2) {
+        if(num1.empty() || num2.empty())
         {
-            break;
+            return "0";
         }
-
-        res.push_back(ch2num(*cit));
-    }
-
-    return res;
-}
-
-std::vector<int32_t> add(const std::vector<int32_t> &num1, const std::vector<int32_t> &num2)
-{
-    int32_t size = std::max(num1.size(), num2.size());
-    std::vector<int32_t> res(size + 1, 0);
-    int32_t idx1 = num1.size() - 1;
-    int32_t idx2 = num2.size() - 1;
-    int32_t carry = 0;
-    int32_t idx = res.size() - 1;
-    while(idx1 >=0 && idx2 >= 0)
-    {
-        int32_t temp = num1[idx1] + num2[idx2] + carry;
-        if(temp >= 10)
+        
+        num1 = filter(num1);
+        num2 = filter(num2);
+        
+        bool is_negative = false;
+        if(num1.front() == '-')
         {
-            temp -= 10;
-            carry = 1;
+            is_negative = true;
+            num1.erase(num1.begin());
         }
-        else
+        
+        if(is_negative && num2.front() == '-')
         {
-            carry = 0;
+            is_negative = false;
+            num2.erase(num2.begin());
         }
-        res[idx--] = temp;
-        idx1--;
-        idx2--;
-    }
-
-    while(idx1 >= 0)
-    {
-        int32_t temp = num1[idx1] + carry;
-        if(temp >= 10)
+        else if(!is_negative && num2.front() == '-')
         {
-            temp -= 10;
-            carry = 1;
+            is_negative = true;
+            num2.erase(num2.begin());
         }
-        else
+        
+        std::reverse(num1.begin(), num1.end());
+        std::reverse(num2.begin(), num2.end());
+        std::string res(num1.size() + num2.size() + 1, '0');
+        for(std::string::size_type i = 0; i < num1.size(); i++)
         {
-            carry = 0;
-        }
-        res[idx--] = temp;
-        idx1--;
-    }
-
-    while(idx1 >= 0)
-    {
-        int32_t temp = num1[idx1] + carry;
-        if(temp >= 10)
-        {
-            temp -= 10;
-            carry = 1;
-        }
-        else
-        {
-            carry = 0;
-        }
-        res[idx--] = temp;
-        idx1--;
-    }
-    res[idx] = carry;
-    return res;
-}
-
-std::string multiply(const std::string &num1, const std::string &num2)
-{
-    if(num1.empty() || num2.empty()
-            || num1 == "0" || num2 == "0")
-    {
-        return "0";
-    }
-
-    bool is_negative = false;
-    if(num1.front() == '-')
-    {
-        is_negative = true;
-    }
-
-    if(num2.front() == '-' && is_negative)
-    {
-        is_negative = false;
-    }
-    else if(num2.front() == '-' && !is_negative)
-    {
-        is_negative = true;
-    }
-
-    std::vector<int32_t> vec_num1(string2num(num1));
-    std::vector<int32_t> vec_num2(string2num(num2));
-    std::vector<int32_t> res(vec_num1.size() + vec_num2.size(), 0);
-    int32_t model1 = 0;
-    for(int32_t idx1 = vec_num1.size() - 1; idx1 >= 0; idx1--)
-    {
-        int32_t model2 = 0;
-        std::vector<int32_t> temp;
-        for(int32_t idx2 = vec_num2.size() - 1; idx2 >= 0; idx2--)
-        {
-            int32_t digit = vec_num1[idx1] * vec_num2[idx2];
-            std::stringstream ss;
-            ss << digit;
-            for(int32_t i = 0; i < model1 + model2; i++)
+            int32_t digit1 = num1[i] - '0';
+            int32_t carry = 0;
+            std::string::size_type j = 0;
+            for(; j < num2.size(); j++)
             {
-                ss << '0';
+                int32_t digit2 = num2[j] - '0';
+                int32_t exit = res[i + j] - '0';
+                int32_t temp = digit1 * digit2 + exit + carry;
+                carry = temp / 10;
+                res[i + j] = '0' + (temp % 10);
             }
-            temp = string2num(ss.str());
-            res = add(res, temp);
-            model2++;
+            
+            if(carry > 0)
+            {
+                res[i + j] = '0' + carry;
+            }
         }
-        model1++;
+        
+        std::reverse(res.begin(), res.end());
+        std::string::const_iterator cit = res.begin();
+        for(; cit != res.end(); cit++)
+        {
+            if(*cit != '0')
+            {
+                break;
+            }
+        }
+        
+        if(cit == res.end())
+        {
+            return "0";
+        }
+        
+        return res.substr(cit - res.begin(), res.end() - cit);
     }
-
-    std::stringstream ss;
-    if(is_negative)
+    
+    std::string filter(const std::string &num)
     {
-        ss << '-';
+        std::string::const_iterator begin = num.begin();
+        for(; begin != num.end(); begin++)
+        {
+            if(*begin == '-' || *begin == '+' || (*begin >= '0' && *begin <= '9'))
+            {
+                break;
+            }
+        }
+        
+        if(begin == num.end())
+        {
+            return "0";
+        }
+        
+        if(*begin == '+')
+        {
+            begin++;
+        }
+        
+        std::string::const_iterator end = begin;
+        if(*end == '-')
+        {
+            end++;
+        }
+        for(; end != num.end(); end++)
+        {
+            if(*end < '0' || *end > '9')
+            {
+                break;
+            }
+        }
+        
+        if(end == begin || (end - begin == 1 && *begin == '-'))
+        {
+            return "0";
+        }
+        
+        return std::string(begin, end);
     }
-    std::vector<int32_t>::const_iterator cit = res.begin();
-    while(cit != res.end() && *cit == 0)
-    {
-        cit++;
-    }
-    for(; cit != res.end(); cit++)
-    {
-        ss << *cit;
-    }
-    return ss.str();
-}
-
-int32_t main()
-{
-    std::string str_num1("0");
-    std::string str_num2("+456");
-    std::cout << multiply(str_num1, str_num2) << std::endl;
-    return 0;
-}
+};

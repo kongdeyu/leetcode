@@ -6,7 +6,6 @@ public:
             return 0;
         }
         
-        bool is_negative = false;
         // find first digit not 0
         std::string::const_iterator cit = str.begin();
         for(; cit != str.end(); cit++)
@@ -17,6 +16,7 @@ public:
             }
         }
         
+        bool is_negative = false;
         if(*cit == '+')
         {
             cit++;
