@@ -6,13 +6,20 @@ public:
             return -1;
         }
         
-        for(std::string::size_type idx = 0; idx < nums.size() - 1; idx++)
+        std::string::size_type left = 0;
+        std::string::size_type right = nums.size() - 1;
+        while(left < right)
         {
-            if(nums[idx] > nums[idx + 1])
+            std::string::size_type middle = (left + right) >> 1;
+            if(nums[middle] < nums[middle + 1])
             {
-                return idx;
+                left = middle + 1;
+            }
+            else
+            {
+                right = middle;
             }
         }
-        return nums.size() - 1;
+        return left;
     }
 };
