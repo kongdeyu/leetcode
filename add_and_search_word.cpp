@@ -27,7 +27,7 @@ public:
     // Returns if the word is in the data structure. A word could
     // contain the dot character '.' to represent any one letter.
     bool search(string word) {
-        if(word.empty())
+        if(word.empty() || _root == NULL)
         {
             return false;
         }
@@ -36,35 +36,16 @@ public:
     
 private:
     bool search(const string &word, int idx, TrieNode *root) {
-        if(root == NULL)
+        if(idx == word.size())
         {
-            return idx == word.size();
-        }
-        
-        if(idx == word.size() - 1)
-        {
-            if(word[idx] == '.')
-            {
-                for(std::vector<TrieNode *>::const_iterator cit = root->_nodes.begin(); cit != root->_nodes.end(); cit++)
-                {
-                    if(*cit != NULL && (*cit)->_is_word)
-                    {
-                        return true;
-                    }
-                }
-                return false;
-            }
-            else
-            {
-                return (root->_nodes)[word[idx] - 'a']->_is_word;
-            }
+            return root->_is_word;
         }
         
         if(word[idx] == '.')
         {
             for(std::vector<TrieNode *>::const_iterator cit = root->_nodes.begin(); cit != root->_nodes.end(); cit++)
             {
-                if(*cit != NULL && search(word, idx + 1, ((*cit)->_nodes)[word[idx] - 'a']))
+                if(*cit != NULL && search(word, idx + 1, *cit))
                 {
                     return true;
                 }
@@ -73,7 +54,7 @@ private:
         }
         else
         {
-            return search(word, idx + 1, (root->_nodes)[word[idx] - 'a']);
+            return (root->_nodes)[word[idx] - 'a'] != NULL && search(word, idx + 1, (root->_nodes)[word[idx] - 'a']);
         }
     }
     
