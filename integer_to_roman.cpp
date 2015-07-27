@@ -7,13 +7,13 @@ public:
         }
         
         std::string res;
-        int model = 1;
+        int model = 1000;
         while(num > 0)
         {
-            std::string temp(int2roman(num % 10, model));
-            res.insert(0, temp);
-            num /= 10;
-            model *= 10;
+            std::string temp(int2roman(num / model, model));
+            res.append(temp);
+            num %= model;
+            model /= 10;
         }
         return res;
     }
@@ -37,15 +37,8 @@ private:
                 return "CM";
         }
         
-        string res;
-        if(digit / 5 == 1)
-        {
-            res.push_back(int2roman_digit(5, model));
-        }
-        for(int i = 0; i < digit % 5; i++)
-        {
-            res.push_back(int2roman_digit(1, model));
-        }
+        string res(digit / 5, int2roman_digit(5, model));
+        res.append(digit % 5, int2roman_digit(1, model));
         return res;
     }
     
