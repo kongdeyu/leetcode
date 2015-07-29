@@ -3,13 +3,24 @@ public:
     int findMin(vector<int>& nums) {
         assert(nums.size());
         
-        for(std::vector<int>::reverse_iterator rit = nums.rbegin(); rit != nums.rend() - 1; rit++)
+        int left = 0;
+        int right = nums.size() - 1;
+        while(left < right && nums[left] > nums[right])
         {
-            if(*rit < *(rit + 1))
+            int middle = (left + right) >> 1;
+            if(nums[middle] > nums[left])
             {
-                return *rit;
+                left = middle + 1;
+            }
+            else if(nums[middle] < nums[right])
+            {
+                right = middle;
+            }
+            else
+            {
+                left = middle + 1;
             }
         }
-        return nums.front();
+        return nums[left];
     }
 };
