@@ -6,65 +6,32 @@ public:
             return;
         }
         
-        std::string::iterator it = s.begin();
-        while(it != s.end() && *it == ' ')
+        std::string res;
+        int32_t idx2fast = s.size() - 1;
+        int32_t idx2slow = s.size() - 1;
+        while(idx2slow >= 0)
         {
-            it++;
-        }
-        if(it == s.end())
-        {
-            s.clear();
-            return;
-        }
-        s.erase(s.begin(), it);
-        
-        std::string::iterator it2fast = s.begin();
-        std::string::iterator it2slow = s.begin();
-        while(it2fast != s.end())
-        {
-            if(*it2fast != ' ')
+            if(s[idx2slow] == ' ')
             {
-                *it2slow = *it2fast;
-                it2slow++;
-                it2fast++;
-                continue;
-            }
-            *it2slow++ = ' ';
-            
-            while(it2fast != s.end() && *it2fast == ' ')
-            {
-                it2fast++;
-            }
-        }
-        if(*(it2slow - 1) == ' ')
-        {
-            s.erase(it2slow - 1, s.end());
-        }
-        else
-        {
-            s.erase(it2slow, s.end());
-        }
-        
-        it2fast = s.begin();
-        it2slow = s.begin();
-        while(it2slow != s.end())
-        {
-            if(*it2slow == ' ')
-            {
-                it2slow++;
+                idx2slow--;
+                idx2fast--;
                 continue;
             }
             
-            if(it2fast == s.end() || *it2fast == ' ')
+            if(idx2fast == -1 || s[idx2fast] == ' ')
             {
-                std::reverse(it2slow, it2fast);
-                it2slow = it2fast++;
+                if(res.size())
+                {
+                    res.push_back(' ');
+                }
+                res.append(std::string(s, idx2fast + 1, idx2slow - idx2fast));
+                idx2slow = --idx2fast;
             }
             else
             {
-                it2fast++;
+                idx2fast--;
             }
         }
-        std::reverse(s.begin(), s.end());
+        s = res;
     }
 };
