@@ -25,12 +25,10 @@ public:
                     res.push_back(' ');
                 }
                 res.append(std::string(s, idx2fast + 1, idx2slow - idx2fast));
-                idx2slow = --idx2fast;
+                idx2slow = idx2fast;
             }
-            else
-            {
-                idx2fast--;
-            }
+            
+            idx2fast--;
         }
         s = res;
     }
