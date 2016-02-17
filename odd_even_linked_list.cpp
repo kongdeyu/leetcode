@@ -14,18 +14,19 @@ public:
             return NULL;
         }
         
-        ListNode *odd_lst = head;
-        ListNode *even_lst = head->next;
-        ListNode *cur_odd_node = head;
-        ListNode *cur_even_node = head->next;
-        while(cur_even_node != NULL && cur_even_node->next != NULL)
+        ListNode *odd_lst_end = head;
+        ListNode *even_lst_end = head->next;
+        while(even_lst_end != NULL && even_lst_end->next != NULL)
         {
-            cur_odd_node->next = cur_even_node->next;
-            cur_odd_node = cur_odd_node->next;
-            cur_even_node->next = cur_even_node->next->next;
-            cur_even_node = cur_even_node->next;
+            ListNode *fst_even_node = odd_lst_end->next;
+            ListNode *next_odd_node = even_lst_end->next;
+            odd_lst_end->next = next_odd_node;
+            even_lst_end->next = next_odd_node->next;
+            next_odd_node->next = fst_even_node;
+            
+            odd_lst_end = odd_lst_end->next;
+            even_lst_end = even_lst_end->next;
         }
-        cur_odd_node->next = even_lst;
         return head;
     }
 };
