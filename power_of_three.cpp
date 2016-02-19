@@ -1,3 +1,6 @@
+#include <climits>
+#include <cmath>
+
 class Solution {
 public:
     bool isPowerOfThree(int n) {
@@ -6,15 +9,8 @@ public:
             return false;
         }
         
-        while(n > 1)
-        {
-            if(n % 3 != 0)
-            {
-                return false;
-            }
-            
-            n /= 3;
-        }
-        return true;
+        int max_exp = int(log(INT_MAX) / log(3));
+        int max_power = pow(3, max_exp);
+        return !(max_power % n);
     }
 };
