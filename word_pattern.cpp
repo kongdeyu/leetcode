@@ -12,7 +12,7 @@ public:
         
         size_t idx2pattern = 0;
         std::map<char, std::string> pattern2word;
-        std::map<std::string, char> word2pattern;
+        std::set<std::string> set_word;
         while(slow < str.size())
         {
             if(str[slow] == ' ')
@@ -26,15 +26,15 @@ public:
                 char cur_pattern = pattern[idx2pattern];
                 
                 std::map<char, std::string>::const_iterator cit2pattern = pattern2word.find(cur_pattern);
-                std::map<std::string, char>::const_iterator cit2word = word2pattern.find(cur_word);
-                if(cit2pattern == pattern2word.end() && cit2word == word2pattern.end())
+                std::set<std::string>::const_iterator cit2word = set_word.find(cur_word);
+                if(cit2pattern == pattern2word.end() && cit2word == set_word.end())
                 {
                     pattern2word[cur_pattern] = cur_word;
-                    word2pattern[cur_word] = cur_pattern;
+                    set_word.insert(cur_word);
                 }
-                else if(cit2pattern != pattern2word.end() && cit2word != word2pattern.end())
+                else if(cit2pattern != pattern2word.end() && cit2word != set_word.end())
                 {
-                    if(cit2pattern->second != cur_word || cit2word->second != cur_pattern)
+                    if(cit2pattern->second != cur_word)
                     {
                         return false;
                     }
@@ -54,5 +54,4 @@ public:
         }
         return idx2pattern == pattern.size();
     }
-    
 };
