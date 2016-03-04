@@ -1,19 +1,11 @@
 class Solution {
-private:
-    int single_number(std::vector<int>& nums)
-    {
-        int res = 0;
-        for(std::vector<int>::const_iterator cit = nums.begin(); cit != nums.end(); cit++)
-        {
-            res ^= *cit;
-        }
-        return res;
-    }
-    
 public:
     vector<int> singleNumber(vector<int>& nums) {
-        int indicator = single_number(nums);
-        
+        int indicator = 0;
+        for(std::vector<int>::const_iterator cit = nums.begin(); cit != nums.end(); cit++)
+        {
+            indicator ^= *cit;
+        }
         assert(indicator != 0);
         
         int divide = 1;
@@ -22,23 +14,23 @@ public:
             divide <<= 1;
         }
         
-        std::vector<int> part1;
-        std::vector<int> part2;
+        int num1 = 0;
+        int num2 = 0;
         for(std::vector<int>::const_iterator cit = nums.begin(); cit != nums.end(); cit++)
         {
             if((*cit & divide) == 0)
             {
-                part1.push_back(*cit);
+                num1 ^= *cit;
             }
             else
             {
-                part2.push_back(*cit);
+                num2 ^= *cit;
             }
         }
         
         std::vector<int> res;
-        res.push_back(single_number(part1));
-        res.push_back(single_number(part2));
+        res.push_back(num1);
+        res.push_back(num2);
         return res;
     }
 };
