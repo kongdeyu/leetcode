@@ -3,19 +3,22 @@ public:
     vector<int> productExceptSelf(vector<int>& nums) {
         assert(nums.size());
         
-        std::vector<int> res(nums.size(), 1);
-        for(int idx = 1; idx < nums.size(); idx++)
-        {
-            res[idx] = res[idx - 1] * nums[idx - 1];
-        }
+        product_except_self(nums, 1, 0, nums.size());
         
-        int temp = 1;
-        for(int idx = nums.size() - 2; idx >= 0; idx--)
+        return nums;
+    }
+    
+private:
+    int product_except_self(std::vector<int> &nums, int backward_product, int idx, int size)
+    {
+        int forward_product = 1;
+        if(idx < size)
         {
-            temp *=  nums[idx + 1];
-            res[idx] *= temp;
+            forward_product = product_except_self(nums, backward_product * nums[idx], idx + 1, size);
+            int temp = nums[idx];
+            nums[idx] = backward_product * forward_product;
+            forward_product *= temp;
         }
-        
-        return res;
+        return forward_product;
     }
 };
