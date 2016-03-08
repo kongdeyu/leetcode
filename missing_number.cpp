@@ -1,13 +1,11 @@
 class Solution {
 public:
     int missingNumber(vector<int>& nums) {
-        int sum = 0;
-        for(std::vector<int>::const_iterator cit = nums.begin(); cit != nums.end(); cit++)
+        int res = 0;
+        for(size_t idx = 0; idx < nums.size(); idx++)
         {
-            sum += *cit;
+            res ^= ((idx + 1) ^ nums[idx]);
         }
-        
-        int total_sum = nums.size() * (nums.size() + 1) / 2;
-        return total_sum - sum;
+        return res;
     }
 };
