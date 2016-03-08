@@ -11,27 +11,33 @@ class Solution {
 public:
     vector<int> preorderTraversal(TreeNode* root) {
         std::vector<int> res;
-        if(root == NULL)
+        TreeNode *cur_node = root;
+        while(cur_node != NULL)
         {
-            return res;
-        }
-        
-        std::stack<TreeNode *> _stack_nodes;
-        _stack_nodes.push(root);
-        while(_stack_nodes.size())
-        {
-            TreeNode *cur_node = _stack_nodes.top();
-            _stack_nodes.pop();
-            if(cur_node->right != NULL)
+            if(cur_node->left == NULL)
             {
-                _stack_nodes.push(cur_node->right);
-            }
-            if(cur_node->left != NULL)
-            {
-                _stack_nodes.push(cur_node->left);
+                res.push_back(cur_node->val);
+                cur_node = cur_node->right;
+                continue;
             }
             
-            res.push_back(cur_node->val);
+            TreeNode *predecessor = cur_node->left;
+            while(predecessor->right != NULL && predecessor->right != cur_node)
+            {
+                predecessor = predecessor->right;
+            }
+            
+            if(predecessor->right != NULL)
+            {
+                predecessor->right = NULL;
+                cur_node = cur_node->right;
+            }
+            else
+            {
+                res.push_back(cur_node->val);
+                predecessor->right = cur_node;
+                cur_node = cur_node->left;
+            }
         }
         return res;
     }
