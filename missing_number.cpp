@@ -1,11 +1,22 @@
 class Solution {
 public:
     int missingNumber(vector<int>& nums) {
-        int res = 0;
-        for(size_t idx = 0; idx < nums.size(); idx++)
+        std::sort(nums.begin(), nums.end());
+        
+        size_t begin = 0;
+        size_t end = nums.size();
+        while(begin < end)
         {
-            res ^= ((idx + 1) ^ nums[idx]);
+            size_t middle = (begin + end) / 2;
+            if(nums[middle] > middle)
+            {
+                end = middle;
+            }
+            else
+            {
+                begin = middle + 1;
+            }
         }
-        return res;
+        return end;
     }
 };
