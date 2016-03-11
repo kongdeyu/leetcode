@@ -11,32 +11,21 @@ class Solution {
 public:
     vector<int> inorderTraversal(TreeNode* root) {
         std::vector<int> res;
-        
+        std::stack<TreeNode *> stack_nodes;
         TreeNode *cur_node = root;
-        while(cur_node != NULL)
+        while(cur_node != NULL || stack_nodes.size())
         {
-            if(cur_node->left == NULL)
+            if(cur_node != NULL)
             {
-                res.push_back(cur_node->val);
-                cur_node = cur_node->right;
-                continue;
-            }
-            
-            TreeNode *predecessor = cur_node->left;
-            while(predecessor->right != NULL && predecessor->right != cur_node)
-            {
-                predecessor = predecessor->right;
-            }
-            if(predecessor->right != NULL)
-            {
-                res.push_back(cur_node->val);
-                predecessor->right = NULL;
-                cur_node = cur_node->right;
+                stack_nodes.push(cur_node);
+                cur_node = cur_node->left;
             }
             else
             {
-                predecessor->right = cur_node;
-                cur_node = cur_node->left;
+                cur_node = stack_nodes.top();
+                stack_nodes.pop();
+                res.push_back(cur_node->val);
+                cur_node = cur_node->right;
             }
         }
         return res;
