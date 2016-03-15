@@ -1,36 +1,4 @@
 class Solution {
-private:
-    std::vector<int> _vec_times;
-    
-    int num_trees(int n)
-    {
-        if(n == 0)
-        {
-            return 1;
-        }
-        
-        if(_vec_times.size() >= n && _vec_times[n - 1] != -1)
-        {
-            return _vec_times[n - 1];
-        }
-        
-        int res = 0;
-        for(int i = 1; i <= n; i++)
-        {
-            int left = num_trees(i - 1);
-            int right = num_trees(n - i);
-            res += left * right;
-        }
-        
-        if(_vec_times.size() < n)
-        {
-            _vec_times.resize(n, -1);
-        }
-        _vec_times[n - 1] = res;
-        
-        return res;
-    }
-    
 public:
     int numTrees(int n) {
         if(n == 0)
@@ -38,7 +6,18 @@ public:
             return 0;
         }
         
-        return num_trees(n);
+        std::vector<int> vec_num(n + 1, 0);
+        vec_num[0] = 1;
+        vec_num[1] = 1;
+        for(int i = 2; i <= n; i++)
+        {
+            for(int j = 1; j <= i; j++)
+            {
+                vec_num[i] += vec_num[j - 1] * vec_num[i - j];
+            }
+        }
+        
+        return vec_num[n];
     }
     
 };
