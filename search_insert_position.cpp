@@ -3,19 +3,31 @@ public:
     int searchInsert(vector<int>& nums, int target) {
         assert(nums.size());
         
-        for(size_t idx = 0; idx < nums.size(); idx++)
+        int begin = 0;
+        int end = nums.size() - 1;
+        while(begin <= end)
         {
-            if(nums[idx] == target)
+            int middle = begin + (end - begin) / 2;
+            if(nums[middle] == target)
             {
-                return idx;
+                return middle;
             }
             
-            if(nums[idx] >= target)
+            if(nums[middle] < target && middle < nums.size() - 1 && nums[middle + 1] > target)
             {
-                return idx;
+                return middle + 1;
+            }
+            
+            if(nums[middle] > target)
+            {
+                end = middle - 1;
+            }
+            else
+            {
+                begin = middle + 1;
             }
         }
-        return nums.size();
+        return begin;
     }
     
 };
