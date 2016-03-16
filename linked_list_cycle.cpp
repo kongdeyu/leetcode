@@ -14,24 +14,24 @@ public:
             return false;
         }
         
-        ListNode *pre_node = head;
-        ListNode *cur_node = head->next;
-        if(pre_node == cur_node)
+        ListNode *fast = head->next;
+        ListNode *slow = head;
+        while(fast != NULL && slow != NULL)
         {
-            return true;
-        }
-        
-        head->next = NULL;
-        while(cur_node != NULL)
-        {
-            ListNode *next_node = cur_node->next;
-            if(next_node == head)
+            if(fast == slow)
             {
                 return true;
             }
-            cur_node->next = pre_node;
-            pre_node = cur_node;
-            cur_node = next_node;
+            if(fast->next != NULL)
+            {
+                fast = fast->next->next;
+            }
+            else
+            {
+                return false;
+            }
+            
+            slow = slow->next;
         }
         return false;
     }
