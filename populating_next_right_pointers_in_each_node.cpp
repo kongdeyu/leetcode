@@ -14,34 +14,17 @@ public:
             return;
         }
         
-        std::queue<TreeLinkNode *> q_cur;
-        std::queue<TreeLinkNode *> q_next;
-        q_cur.push(root);
-        while(q_cur.size())
+        if(root->left != NULL)
         {
-            TreeLinkNode *pre = NULL;
-            while(q_cur.size())
-            {
-                TreeLinkNode *cur = q_cur.front();
-                q_cur.pop();
-                
-                if(pre != NULL)
-                {
-                    pre->next = cur;
-                }
-                pre = cur;
-                
-                if(cur->left != NULL)
-                {
-                    q_next.push(cur->left);
-                }
-                
-                if(cur->right != NULL)
-                {
-                    q_next.push(cur->right);
-                }
-            }
-            q_cur.swap(q_next);
+            root->left->next = root->right;
         }
+        
+        if(root->right != NULL && root->next != NULL)
+        {
+            root->right->next = root->next->left;
+        }
+        
+        connect(root->left);
+        connect(root->right);
     }
 };
