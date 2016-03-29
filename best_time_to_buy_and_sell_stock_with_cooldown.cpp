@@ -6,18 +6,18 @@ public:
             return 0;
         }
         
-        int b = std::max(-prices[0], -prices[1]);
-        int s1 = 0;
-        int s2 = std::max(0, prices[1] - prices[0]);
-        for(size_t i = 2; i < prices.size(); i++)
+        int b = -prices[0];
+        int no_op = -prices[0];
+        int s = 0;
+        int cooldown = 0;
+        for(size_t idx = 1; idx < prices.size(); idx++)
         {
-            int b_new = std::max(b, s1 - prices[i]);
-            int s2_new = std::max(s2, b + prices[i]);
-            b = b_new;
-            s1 = s2;
-            s2 = s2_new;
+            no_op = std::max(no_op, b);
+            b = cooldown - prices[idx];
+            cooldown = std::max(cooldown, s);
+            s = no_op + prices[idx];
         }
-        return s2;
+        return std::max(s, cooldown);
     }
     
 };
