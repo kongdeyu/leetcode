@@ -3,17 +3,15 @@ public:
     vector<int> grayCode(int n) {
         assert(n >= 0);
         
-        int num = 0;
+        std::vector<int> res;
+        res.push_back(0);
         for(int i = 0; i < n; i++)
         {
-            num = ((num << 1) ^ 1);
-        }
-        
-        std::vector<int> res;
-        for(int i = 0; i <= num; i++)
-        {
-            int temp = (i / 2) ^ i;
-            res.push_back(temp);
+            int highbit = 1 << i;
+            for(int j = res.size() - 1; j >= 0; j--)
+            {
+                res.push_back(res[j] + highbit);
+            }
         }
         return res;
     }
