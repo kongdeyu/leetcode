@@ -3,17 +3,24 @@ public:
     int integerBreak(int n) {
         assert(n > 1);
         
-        int res = 0;
-        for(int i = 2; i <= n; i++)
+        int quotient = n / 3;
+        if(quotient <= 1)
         {
-            int quotient = n / i;
-            int remainder = n % i;
-            int cur_product = pow(quotient, i - remainder) * pow(quotient + 1, remainder);
-            if(cur_product > res)
-            {
-                res = cur_product;
-            }
+            return n / 2 * (n / 2 + n % 2);
         }
-        return res;
+        
+        int remainder = n % 3;
+        if(remainder == 0)
+        {
+            return pow(3, n / 3);
+        }
+        
+        if(remainder == 1)
+        {
+            return pow(3, quotient - 1) * 4;
+        }
+        
+        // remainder == 2
+        return pow(3, quotient) * 2;
     }
 };
