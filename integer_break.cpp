@@ -12,7 +12,7 @@ public:
         int remainder = n % 3;
         if(remainder == 0)
         {
-            return pow(3, n / 3);
+            return pow(3, quotient);
         }
         
         if(remainder == 1)
