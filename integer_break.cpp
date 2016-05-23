@@ -3,24 +3,28 @@ public:
     int integerBreak(int n) {
         assert(n > 1);
         
-        int quotient = n / 3;
-        if(quotient <= 1)
+        if(n == 2)
         {
-            return n / 2 * (n / 2 + n % 2);
+            return 1;
         }
         
-        int remainder = n % 3;
-        if(remainder == 0)
+        if(n == 3)
         {
-            return pow(3, quotient);
+            return 2;
         }
         
-        if(remainder == 1)
+        int q1 = 1;
+        int q2 = 2;
+        int q3 = 3;
+        int q4 = 0;
+        for(int i = 4; i <= n; i++)
         {
-            return pow(3, quotient - 1) * 4;
+            q4 = std::max(q2 * 2, q1 * 3);
+            q1 = q2;
+            q2 = q3;
+            q3 = q4;
         }
-        
-        // remainder == 2
-        return pow(3, quotient) * 2;
+        return q4;
     }
+    
 };
