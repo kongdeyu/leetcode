@@ -20,24 +20,12 @@ public:
             }
         }
         
-        std::map<int, int> map_nums2;
         for(std::vector<int>::const_iterator cit = nums2.begin(); cit != nums2.end(); cit++)
         {
-            if(map_nums2.find(*cit) != map_nums2.end())
+            if(map_nums1.find(*cit) != map_nums1.end() && map_nums1[*cit] > 0)
             {
-                map_nums2[*cit]++;
-            }
-            else
-            {
-                map_nums2[*cit] = 1;
-            }
-        }
-        
-        for(std::map<int, int>::const_iterator cit = map_nums1.begin(); cit != map_nums1.end(); cit++)
-        {
-            if(map_nums2.find(cit->first) != map_nums2.end())
-            {
-                res.insert(res.end(), std::min(cit->second, map_nums2[cit->first]), cit->first);
+                map_nums1[*cit]--;
+                res.push_back(*cit);
             }
         }
         return res;
