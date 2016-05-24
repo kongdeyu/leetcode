@@ -7,25 +7,25 @@ public:
             return res;
         }
         
-        std::map<int, int> map_nums1;
-        for(std::vector<int>::const_iterator cit = nums1.begin(); cit != nums1.end(); cit++)
+        std::sort(nums1.begin(), nums1.end());
+        std::sort(nums2.begin(), nums2.end());
+        std::vector<int>::size_type idx1 = 0;
+        std::vector<int>::size_type idx2 = 0;
+        while(idx1 < nums1.size() && idx2 < nums2.size())
         {
-            if(map_nums1.find(*cit) != map_nums1.end())
+            if(nums1[idx1] < nums2[idx2])
             {
-                map_nums1[*cit]++;
+                idx1++;
+            }
+            else if(nums1[idx1] > nums2[idx2])
+            {
+                idx2++;
             }
             else
             {
-                map_nums1[*cit] = 1;
-            }
-        }
-        
-        for(std::vector<int>::const_iterator cit = nums2.begin(); cit != nums2.end(); cit++)
-        {
-            if(map_nums1.find(*cit) != map_nums1.end() && map_nums1[*cit] > 0)
-            {
-                map_nums1[*cit]--;
-                res.push_back(*cit);
+                res.push_back(nums1[idx1]);
+                idx1++;
+                idx2++;
             }
         }
         return res;
