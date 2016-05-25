@@ -8,20 +8,20 @@ public:
         }
         
         std::vector<int> nums;
-        return combination_sum(k, n, nums);
+        combination_sum(k, n, nums, res);
+        return res;
     }
     
 private:
-    std::vector<std::vector<int> > combination_sum(int k, int n, std::vector<int> &nums)
+    void combination_sum(int k, int n, std::vector<int> &nums, std::vector<std::vector<int> > &res)
     {
-        std::vector<std::vector<int> > res;
         if(k == 0)
         {
             if(nums.size() && n == 0)
             {
                 res.push_back(nums);
             }
-            return res;
+            return;
         }
         
         int i = 1;
@@ -33,14 +33,9 @@ private:
         for(; i <= 9; i++)
         {
             nums.push_back(i);
-            std::vector<std::vector<int> > vec_nums = combination_sum(k - 1, n - i, nums);
-            if(vec_nums.size())
-            {
-                res.insert(res.end(), vec_nums.begin(), vec_nums.end());
-            }
+            combination_sum(k - 1, n - i, nums, res);
             nums.pop_back();
         }
-        return res;
     }
     
 };
