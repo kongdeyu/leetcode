@@ -9,16 +9,18 @@ public:
         
         for(std::string::iterator cit = input.begin(); cit != input.end(); cit++)
         {
-            if(*cit == '+' || *cit == '-' || *cit == '*')
+            if(isdigit(*cit))
             {
-                std::vector<int> left = diffWaysToCompute(std::string(input.begin(), cit));
-                std::vector<int> right = diffWaysToCompute(std::string(cit + 1, input.end()));
-                for(std::vector<int>::const_iterator cit2left = left.begin(); cit2left != left.end(); cit2left++)
+                continue;
+            }
+            
+            std::vector<int> left = diffWaysToCompute(std::string(input.begin(), cit));
+            std::vector<int> right = diffWaysToCompute(std::string(cit + 1, input.end()));
+            for(std::vector<int>::const_iterator cit2left = left.begin(); cit2left != left.end(); cit2left++)
+            {
+                for(std::vector<int>::const_iterator cit2right = right.begin(); cit2right != right.end(); cit2right++)
                 {
-                    for(std::vector<int>::const_iterator cit2right = right.begin(); cit2right != right.end(); cit2right++)
-                    {
-                        res.push_back(calc(*cit2left, *cit2right, *cit));
-                    }
+                    res.push_back(calc(*cit2left, *cit2right, *cit));
                 }
             }
         }
@@ -39,19 +41,17 @@ public:
 private:
     int calc(int left, int right, char op)
     {
-        if(op == '+')
+        switch(op)
         {
-            return left + right;
+            case '+':
+                return left + right;
+            case '-':
+                return left - right;
+            case '*':
+                return left * right;
+            default:
+                return 0;
         }
-        if(op == '-')
-        {
-            return left - right;
-        }
-        if(op == '*')
-        {
-            return left * right;
-        }
-        return 0;
     }
     
 };
