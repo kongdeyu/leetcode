@@ -1,27 +1,50 @@
 class Solution {
 public:
+    static bool compare(pair<int, int> a, pair<int, int> b)
+    {
+        return a.first < b.first;
+    }
+    
     vector<int> twoSum(vector<int> &numbers, int target) {
         vector<int> res;
         if(numbers.size() < 2)
         {
             return res;
         }
-
-        map<int, int> input;
-        int index = 0;
+        
+        vector<pair<int, int> > input;
+        int index = 1;
         for(vector<int>::iterator it = numbers.begin(); it != numbers.end(); it++)
         {
-            int to_find = target - *it;
-            map<int, int>::iterator it_2_find = input.find(to_find);
-            if(input.end() == it_2_find)
+            input.push_back(make_pair(*it, index++));
+        }
+        sort(input.begin(), input.end(), Solution::compare);
+        
+        vector<pair<int, int> >::iterator begin = input.begin();
+        vector<pair<int, int> >::iterator end = input.end() - 1;
+        while(begin < end)
+        {
+            if(begin->first + end->first == target)
             {
-                input.insert(make_pair(*it, ++index));
+                if(begin->second < end->second)
+                {
+                    res.push_back(begin->second);
+                    res.push_back(end->second);
+                }
+                else
+                {
+                    res.push_back(end->second);
+                    res.push_back(begin->second);
+                }
+                break;
+            }
+            else if(begin->first + end->first < target)
+            {
+                begin++;
             }
             else
             {
-                res.push_back(it_2_find->second);
-                res.push_back(++index);
-                break;
+                end--;
             }
         }
         return res;
