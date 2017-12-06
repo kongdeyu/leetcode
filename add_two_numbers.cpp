@@ -12,11 +12,7 @@ public:
         ListNode *head = new ListNode(0);
         ListNode *tail = head;
         int carry = 0;
-        while (true) {
-            if (l1 == NULL && l2 == NULL) {
-                break;
-            }
-
+        while (l1 != NULL || l2 != NULL) {
             int left = 0;
             int right = 0;
             if (l1 != NULL) {
