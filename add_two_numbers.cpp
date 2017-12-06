@@ -9,8 +9,9 @@
 class Solution {
 public:
     ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
-        ListNode *res = new ListNode(0);
-        ListNode *tail = res;
+        ListNode *head = new ListNode(0);
+        ListNode *tail = head;
+        int carry = 0;
         while (true) {
             if (l1 == NULL && l2 == NULL) {
                 break;
@@ -27,15 +28,17 @@ public:
                 l2 = l2->next;
             }
 
-            int temp = left + right + tail->val;
-            tail->val = temp % 10;
-
-            if (l1 != NULL || l2 != NULL || temp / 10 & 1) {
-                tail->next = new ListNode(0);
-                tail = tail->next;
-                tail->val = temp / 10;
-            }
+            int temp = left + right + carry;
+            tail->next = new ListNode(temp % 10);
+            tail = tail->next;
+            carry = temp / 10;
         }
+        if (carry == 1) {
+            tail->next = new ListNode(1);
+        }
+
+        ListNode *res = head->next;
+        delete head;
         return res;
     }
 };
