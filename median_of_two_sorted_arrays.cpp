@@ -1,28 +1,21 @@
 class Solution {
-private:
-    int returnLeftHead(int num1, int num2) {
-        return std::max(num1, num2);
-    }
-
-    int returnRightHead(int num1, int num2) {
-        return std::min(num1, num2);
-    }
-
 public:
     double findMedianSortedArrays(vector<int>& nums1, vector<int>& nums2) {
         std::vector<int> array1 = nums1;
         std::vector<int> array2 = nums2;
-        if (nums1.size() + 1 > nums2.size()) {
-            array1 = nums2;
-            array2 = nums1;
+        if (array1.size() + 1 > array2.size()) {
+            array1.swap(array2);
         }
 
         int len1 = array1.size();
         int len2 = array2.size();
 
         if (len1 == 0) {
-            if (len2 % 2 == 0) {
-                return (array2[len2 / 2] + array2[len2 / 2 - 1]) * 1.0 / 2;
+            if (len2 == 0) {
+                return 0;
+            }
+            else if (len2 % 2 == 0) {
+                return (array2[len2 / 2 - 1] + array2[len2 / 2]) * 1.0 / 2;
             }
             else {
                 return array2[len2 / 2];
@@ -45,7 +38,7 @@ public:
                     left_head = array1[i - 1];
                 }
                 else {
-                    left_head = returnLeftHead(array1[i - 1], array2[j - 1]);
+                    left_head = std::max(array1[i - 1], array2[j - 1]);
                 }
 
                 if (i == len1) {
@@ -55,7 +48,7 @@ public:
                     right_head = array1[i];
                 }
                 else {
-                    right_head = returnRightHead(array1[i], array2[j]);
+                    right_head = std::min(array1[i], array2[j]);
                 }
 
                 if ((len1 + len2) % 2 == 0) {
