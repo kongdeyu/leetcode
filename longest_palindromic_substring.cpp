@@ -1,21 +1,4 @@
 class Solution {
-private:
-    bool is_palindromic(std::string::const_iterator cit2begin, std::string::const_iterator cit2end, int cur_min_len) {
-        if (cit2end - cit2begin + 1 < cur_min_len) {
-            return false;
-        }
-
-        while (cit2begin <= cit2end) {
-            if (*cit2begin != *cit2end) {
-                return false;
-            }
-
-            cit2begin++;
-            cit2end--;
-        }
-        return true;
-    }
-
 public:
     string longestPalindrome(string s) {
         std::string res;
@@ -23,12 +6,28 @@ public:
             return res;
         }
 
-        int cur_min_len = 1;
-        for (std::string::const_iterator cit2begin = s.begin(); cit2begin != s.end(); cit2begin++) {
-            for (std::string::const_iterator cit2end = cit2begin; cit2end != s.end(); cit2end++) {
-                if (is_palindromic(cit2begin, cit2end, cur_min_len)) {
-                    cur_min_len = cit2end - cit2begin + 1;
-                    res = std::string(cit2begin, cit2end + 1);
+        if (s.size() == 1) {
+            return s;
+        }
+
+        int cur_max_len = 1;
+        res = std::string(s.begin(), s.begin() + 1);
+        for (std::string::const_iterator cit = s.begin(); cit != s.end() - 1; cit++) {
+            for (int shift = 0; shift < 2; shift++) {
+                std::string::const_iterator left = cit;
+                std::string::const_iterator right = cit + shift;
+                if (*left != *right) {
+                    break;
+                }
+
+                while (left != s.begin() && right != s.end() - 1 && *(left - 1) == *(right + 1)) {
+                    left--;
+                    right++;
+                }
+
+                if (cur_max_len < right - left + 1) {
+                    cur_max_len = right - left + 1;
+                    res = std::string(left, right + 1);
                 }
             }
         }
